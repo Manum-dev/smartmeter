@@ -17,7 +17,7 @@ async def add_security_headers(request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     # Abbiamo aggiunto 'data:' e 'https://fonts.gstatic.com' per permettere il caricamento corretto dei font
-    response.headers["Content-Security-Policy"] = "default-src 'self' 'unsafe-inline' data: https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net;"
+    response.headers["Content-Security-Policy"] = "default-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;"
     return response
 
 app.mount("/static", StaticFiles(directory="static"), name="static")

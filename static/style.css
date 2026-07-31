@@ -195,15 +195,41 @@ header h1 {
     border-color: var(--accent-green);
 }
 
-.btn {
-    background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
-    color: var(--bg-color);
-    border: none;
-    border-radius: 24px;
-    padding: 0 20px;
+.btn-secondary {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(16, 185, 129, 0.08));
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: var(--text-main);
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
-    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Spazio tra icona e testo */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+    border-color: transparent;
+    color: var(--bg-color); /* Il testo diventa scuro per leggibilità sul gradiente */
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+}
+
+/* Icona SVG all'interno del bottone */
+.btn-icon {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    transition: transform 0.3s ease;
+}
+
+/* Micro-animazione: quando passi sul bottone, l'icona di download si muove leggermente verso il basso */
+.btn-secondary:hover .btn-icon {
+    transform: translateY(2px);
 }
 
 /* 📱 RESPONSIVE DESIGN (Media Query per Mobile e Tablet) */

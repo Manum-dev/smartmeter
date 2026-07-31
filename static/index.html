@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Meter Analyst</title>
+    <title>Smart Meter Analyst | Ampere Transition</title>
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF per la generazione di report PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -18,7 +20,10 @@
     <div class="container">
         <!-- Left Panel: Energy Data -->
         <div class="dashboard-panel">
-            <h2>Energy Performance Dashboard</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <h2>Energy Performance Dashboard</h2>
+                <button class="btn-secondary" id="btn-export">Export PDF</button>
+            </div>
             
             <div class="stats-grid">
                 <div class="stat-card">
@@ -48,112 +53,18 @@
         <div class="chat-panel">
             <div class="chat-messages" id="chat-messages">
                 <div class="message ai">
-                    Hello! I am your energy assistant. I have analyzed your smart meter data. How can I help you optimize your energy consumption today?
+                    Hello! I am your <Energy assistant. I have analyzed your smart meter data. How can I help you optimize your energy consumption today?
                 </div>
             </div>
             
             <div class="chat-input-area">
-                <input type="text" class="chat-input" id="user-input" placeholder="Ask the AI (e.g. where am I wasting energy?)..." onkeypress="handleKeyPress(event)">
-                <button class="btn" onclick="inviaMessaggio()">Send</button>
+                <input type="text" class="chat-input" id="user-input" placeholder="Ask the AI (e.g. where am I wasting energy?)...">
+                <button class="btn" id="btn-send">Send</button>
             </div>
         </div>
     </div>
 
-    <script>
-        let myChart = null;
-
-        window.onload = function() {
-            const ctx = document.getElementById('energyChart').getContext('2d');
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-                    datasets: [
-                        { label: 'Consumption (kWh)', data: [1.2, 1.1, 4.5, 9.2, 7.8, 2.1], borderColor: '#06b6d4', tension: 0.4 },
-                        { label: 'Solar Production (kWh)', data: [0, 0, 1.2, 5.8, 3.1, 0], borderColor: '#10b981', tension: 0.4 }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' } },
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' } }
-                    }
-                }
-            });
-            caricaDatiIniziali();
-        };
-
-        async function caricaDatiIniziali() {
-            try {
-                const response = await fetch('/api/analizza-e-chiedi', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ domanda: "Give me a summary of my energy usage." })
-                });
-                const data = await response.json();
-                aggiornaDashboard(data.statistiche);
-            } catch (error) {
-                console.error("Unable to load initial data:", error);
-            }
-        }
-
-        function aggiornaDashboard(stats) {
-            document.getElementById('stat-consumo').innerText = stats.consumo_totale_kwh + " kWh";
-            document.getElementById('stat-produzione').innerText = stats.produzione_totale_kwh + " kWh";
-            document.getElementById('stat-autoconsumo').innerText = stats.tasso_autoconsumo_percento + " %";
-            document.getElementById('stat-notturno').innerText = stats.percentuale_consumo_notturno + " %";
-        }
-
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') inviaMessaggio();
-        }
-
-        async function inviaMessaggio() {
-            const input = document.getElementById('user-input');
-            const query = input.value.trim();
-            if (!query) return;
-
-            aggiungiMessaggio(query, 'user');
-            input.value = '';
-
-            const loadingId = aggiungiMessaggio('Analyzing data...', 'ai');
-
-            try {
-                const response = await fetch('/api/analizza-e-chiedi', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ domanda: query })
-                });
-                
-                const data = await response.json();
-                rimuoviMessaggio(loadingId);
-                aggiungiMessaggio(data.risposta_ai, 'ai');
-                aggiornaDashboard(data.statistiche);
-                
-            } catch (error) {
-                rimuoviMessaggio(loadingId);
-                aggiungiMessaggio("Error: unable to connect to the server.", 'ai');
-            }
-        }
-
-        function aggiungiMessaggio(testo, mittente) {
-            const chat = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            const id = 'msg-' + Date.now();
-            div.id = id;
-            div.className = `message ${mittente}`;
-            div.textContent = testo;
-            chat.appendChild(div);
-            chat.scrollTop = chat.scrollHeight;
-            return id;
-        }
-
-        function rimuoviMessaggio(id) {
-            const msg = document.getElementById(id);
-            if (msg) msg.remove();
-        }
-    </script>
+    <!-- Collegamento al file JS esterno alla fine del body -->
+    <script src="/static/app.js"></script>
 </body>
 </html>
