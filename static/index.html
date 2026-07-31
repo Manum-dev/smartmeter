@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Meter Analyst | Ampere Transition</title>
+    <!-- Collegamento al file CSS esterno -->
     <link rel="stylesheet" href="/static/style.css">
+    <!-- Font Elegante -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Chart.js per i Grafici -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- jsPDF per la generazione di report PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -18,11 +21,19 @@
     </header>
 
     <div class="container">
-        <!-- Left Panel: Energy Data -->
+        <!-- Left Panel: Energy Data & Charts -->
         <div class="dashboard-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                 <h2>Energy Performance Dashboard</h2>
-                <button class="btn-secondary" id="btn-export">Export PDF</button>
+                <!-- Bottone di esportazione PDF personalizzato con icona SVG -->
+                <button class="btn-secondary" id="btn-export">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Export PDF
+                </button>
             </div>
             
             <div class="stats-grid">
@@ -53,7 +64,7 @@
         <div class="chat-panel">
             <div class="chat-messages" id="chat-messages">
                 <div class="message ai">
-                    Hello! I am your <Energy assistant. I have analyzed your smart meter data. How can I help you optimize your energy consumption today?
+                    Hello! I am yourenergy assistant. I have analyzed your smart meter data. How can I help you optimize your energy consumption today?
                 </div>
             </div>
             
@@ -64,7 +75,7 @@
         </div>
     </div>
 
-    <!-- Collegamento al file JS esterno alla fine del body -->
+    <!-- Collegamento al file JS esterno -->
     <script src="/static/app.js"></script>
 </body>
 </html>
